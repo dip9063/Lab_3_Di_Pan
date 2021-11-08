@@ -1,0 +1,64 @@
+---
+title: "Lab 3 Monty Hall Simulation"
+author: "Di Pan"
+date: "10/30/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+
+```
+
+### Github Link
+[github link](https://github.com/dip9063/Lab_3_Di_Pan.git)
+
+
+### Simulation 
+
+```{r}
+
+## write a function that does one play of the Monty Hall simulation 
+
+set.seed(33)                  ## set seed 
+
+monty <- function(switch = TRUE) {            ## create function with logical argument for 'switch = TRUE' 
+  doors <- sample (c("car", "goat", "goat"),  ## sample a vector with 3 prizes without replacement
+                   size = 3, 
+                   replace = FALSE)              
+  contestant <- sample(1:3,                  ## contestant samples from 3 items, once without replacement  
+                       size = 1, 
+                       replace = FALSE)                       
+  if(switch) {                    ## if else statement.Index doors with choice.      
+    doors[contestant] != "car"    ## If the initial choice is != car (FALSE), then switching == car (TRUE) 
+  } else {                                                                        
+    doors[contestant] == "car"
+  }
+  
+}     
+
+## write a function that performs the simulation multiple times. 
+## Have an argument for the number of times that run the simulation (n), and the strategy switch. Use replicate function. 
+
+## replicate_monty function, with arguments n = number of replications, and logical argument switch. Inside the function use replicate n times, using the function "monty" defined above. 
+
+replicate_monty <- function(n, switch = TRUE) {     
+  replicate(n, monty(switch))
+}
+
+## simulate 1000 times for switching
+switch <- replicate_monty(1000, switch = TRUE)      
+
+## simulate 1000 times without switching. 
+no_switch <- replicate_monty(1000, switch = FALSE)
+
+## obtain the proportion of TRUE (car) switching 
+mean(switch)
+
+## obtain the proportion of TRUE (car) without switching 
+mean(no_switch)
+
+
+```
